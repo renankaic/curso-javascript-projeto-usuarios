@@ -7,18 +7,16 @@ function addLine(dataUser){
     var tr = document.createElement("tr");
 
     //Uses the template string to create a table row
-    tr.innerHTML = `
-        <tr>
-            <td><img src="dist/img/user1-128x128.jpg" alt="User Image" class="img-circle img-sm"></td>
-            <td>${dataUser.name}</td>
-            <td>${dataUser.email}</td>
-            <td>${dataUser.admin}</td>
-            <td>${dataUser.birth}</td>
-            <td>
-                <button type="button" class="btn btn-primary btn-xs btn-flat">Editar</button>
-                <button type="button" class="btn btn-danger btn-xs btn-flat">Excluir</button>
-            </td>
-        </tr>
+    tr.innerHTML = `        
+        <td><img src="dist/img/user1-128x128.jpg" alt="User Image" class="img-circle img-sm"></td>
+        <td>${dataUser.name}</td>
+        <td>${dataUser.email}</td>
+        <td>${dataUser.admin}</td>
+        <td>${dataUser.birth}</td>
+        <td>
+            <button type="button" class="btn btn-primary btn-xs btn-flat">Editar</button>
+            <button type="button" class="btn btn-danger btn-xs btn-flat">Excluir</button>
+        </td>
     `;
 
     //Appends the new created table row to table's tbody
@@ -48,7 +46,10 @@ document.getElementById("form-user-create").addEventListener("submit", function(
     
     });
 
+    //instantiates a new user
+    var objectUser = new User(user.name, user.gender, user.birth, user.country, user.email, user.password, user.photo, user.admin);
+
     //adds a user line in table
-    addLine(user);
+    addLine(objectUser);
 
 });
