@@ -21,41 +21,63 @@ class UserController {
             
             let values = this.getValues();
 
-            this.getPhoto((content) => {
+            this.getPhoto().then(
+                (content) => {
 
-                values.photo = content;
+                    //If everything goes OK
+                    values.photo = content;
 
-                //adds a user line in table
-                this.addLine(values);
+                    //adds a user line in table
+                    this.addLine(values);
+    
+                },
+                
+                (e) => {
 
-            });
+                    //If any failure
+                    console.error(e);
+
+                }
+            );
 
         });
 
     }//Closing onSubmit()
 
-    getPhoto(callback){
+    getPhoto(){
 
-        //Uses the FileReader() API to read the img file
-        let fileReader = new FileReader();
+        //Return a Promise to the caller
+        return new Promise( (resolve, reject) => {
 
-        //From elements array, filter the item that his name is "photo"
-        let elements = [...this.formEl.elements].filter(item => {
-            if (item.name === "photo") return item;
+            //Uses the FileReader() API to read the img file
+            let fileReader = new FileReader();
+
+            //From elements array, filter the item that his name is "photo"
+            let elements = [...this.formEl.elements].filter(item => {
+                if (item.name === "photo") return item;
+            });
+
+            //Get the file from filtered element
+            let file = elements[0].files[0];
+
+            //Adds a onload that will be executed after readAsDataUrl()
+            fileReader.onload = () => {
+                
+                resolve(fileReader.result);
+
+            };
+
+            //Adds a onError that will be executed if any error occurs
+            fileReader.onerror = () => {
+
+                reject(e);
+
+            };
+
+            //create a base64 from the uploaded file
+            fileReader.readAsDataURL(file);
+
         });
-
-        //Get the file from filtered element
-        let file = elements[0].files[0];
-
-        //Adds a onload that will be executed after readAsDataUrl()
-        fileReader.onload = () => {
-            
-            callback(fileReader.result);
-
-        };
-
-        //create a base64 from the uploaded file
-        fileReader.readAsDataURL(file);
 
     }
 
