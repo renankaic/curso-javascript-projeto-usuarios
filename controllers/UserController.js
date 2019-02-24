@@ -19,14 +19,45 @@ class UserController {
             //cancels the default command that the event would have
             event.preventDefault();            
             
-            let user = this.getValues();
+            let values = this.getValues();
 
-            //adds a user line in table
-            this.addLine(user);
+            this.getPhoto((content) => {
+
+                values.photo = content;
+
+                //adds a user line in table
+                this.addLine(values);
+
+            });
 
         });
 
     }//Closing onSubmit()
+
+    getPhoto(callback){
+
+        //Uses the FileReader() API to read the img file
+        let fileReader = new FileReader();
+
+        //From elements array, filter the item that his name is "photo"
+        let elements = [...this.formEl.elements].filter(item => {
+            if (item.name === "photo") return item;
+        });
+
+        //Get the file from filtered element
+        let file = elements[0].files[0];
+
+        //Adds a onload that will be executed after readAsDataUrl()
+        fileReader.onload = () => {
+            
+            callback(fileReader.result);
+
+        };
+
+        //create a base64 from the uploaded file
+        fileReader.readAsDataURL(file);
+
+    }
 
     getValues(){
        
@@ -67,7 +98,7 @@ class UserController {
     
         //Uses the template string to create a table row
         this.tableEl.innerHTML = `        
-            <td><img src="dist/img/user1-128x128.jpg" alt="User Image" class="img-circle img-sm"></td>
+            <td><img src="${dataUser.photo}" alt="User Image" class="img-circle img-sm"></td>
             <td>${dataUser.name}</td>
             <td>${dataUser.email}</td>
             <td>${dataUser.admin}</td>
