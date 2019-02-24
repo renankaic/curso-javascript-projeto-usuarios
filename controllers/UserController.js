@@ -32,8 +32,10 @@ class UserController {
        
         let user = {};
 
-        //gets all values from fields and put in the user array
-        this.formEl.elements.forEach(function(field, index){
+        //gets all values from fields
+        //using the spread (...) to transform a collection object
+        //into a array - So we will can use forEach in it
+        [...this.formEl.elements].forEach(function(field, index){
 
             if ( field.name == "gender" && field.checked ){
         
