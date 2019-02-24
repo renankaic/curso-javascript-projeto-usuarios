@@ -11,7 +11,6 @@ class User {
         this.photo = photo;
         this.admin = admin;
 
-
     }
 
 }
