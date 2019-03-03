@@ -26,7 +26,15 @@ class UserController {
 
             let values = this.getValues();
 
+            if ( !values ){
+
+                //Unlock the submit button
+                btnSubmit.disabled = false;
+                return false;
+
+            }
             
+
             this.getPhoto().then(
                 (content) => {
 
@@ -100,11 +108,20 @@ class UserController {
     getValues(){
        
         let user = {};
+        let isValid = true;
 
         //gets all values from fields
         //using the spread (...) to transform a collection object
         //into a array - So we will can use forEach in it
         [...this.formEl.elements].forEach(function(field, index){
+
+            if ( ['name', 'email', 'password'].indexOf(field.name) > -1 && !field.value ){
+
+                //Gets the input parent div
+                field.parentElement.classList.add('has-error');
+                isValid = false;
+
+            }
 
             if ( field.name == "gender" && field.checked ){
         
@@ -121,6 +138,12 @@ class UserController {
             }
         
         });
+
+        if (!isValid){
+
+            return false;
+
+        }
 
         //instantiates a new user
         return new User(
