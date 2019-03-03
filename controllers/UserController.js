@@ -26,9 +26,11 @@ class UserController {
 
             let values = this.getValues();
 
+            
             this.getPhoto().then(
                 (content) => {
 
+                    debugger;
                     //If everything goes OK
                     values.photo = content;
 
@@ -143,7 +145,7 @@ class UserController {
             <td>${dataUser.name}</td>
             <td>${dataUser.email}</td>
             <td>${(dataUser.admin) ? 'Sim': 'Não'}</td>
-            <td>${dataUser.register.toLocaleDateString('pt-br')}</td>
+            <td>${dataUser.register.toLocaleDateString('pt-br') + " " + dataUser.register.toLocaleTimeString('pt-br')}</td>
             <td>
                 <button type="button" class="btn btn-primary btn-xs btn-flat">Editar</button>
                 <button type="button" class="btn btn-danger btn-xs btn-flat">Excluir</button>
