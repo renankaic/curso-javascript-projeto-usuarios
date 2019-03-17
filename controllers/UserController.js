@@ -6,8 +6,19 @@ class UserController {
         this.tableEl = document.getElementById(tableId);
 
         this.onSubmit();
+        this.onEdit();
 
     }//Closing constructor()
+
+    onEdit(){
+
+        document.querySelector("#box-user-update .btn-cancel").addEventListener("click", e=>{
+
+            this.showPanelCreate();
+
+        });
+
+    }
 
     onSubmit(){
 
@@ -37,7 +48,6 @@ class UserController {
             this.getPhoto().then(
                 (content) => {
 
-                    debugger;
                     //If everything goes OK
                     values.photo = content;
 
@@ -143,7 +153,7 @@ class UserController {
             return false;
 
         }
-
+        
         //instantiates a new user
         return new User(
             user.name,
@@ -172,10 +182,17 @@ class UserController {
             <td>${(dataUser.admin) ? 'Sim': 'Não'}</td>
             <td>${dataUser.register.toLocaleDateString('pt-br') + " " + dataUser.register.toLocaleTimeString('pt-br')}</td>
             <td>
-                <button type="button" class="btn btn-primary btn-xs btn-flat">Editar</button>
+                <button type="button" class="btn btn-primary btn-edit btn-xs btn-flat">Editar</button>
                 <button type="button" class="btn btn-danger btn-xs btn-flat">Excluir</button>
             </td>
         `;
+
+        tr.querySelector(".btn-edit").addEventListener("click", e =>{
+
+            console.log(JSON.parse(tr.dataset.user));
+            this.showPanelUpdate();
+
+        });
 
         //Uses the template string to create a table row
         this.tableEl.appendChild(tr);
@@ -183,6 +200,20 @@ class UserController {
         this.updateCount();
         
     }//Closing addline()
+
+    showPanelCreate(){
+
+        document.querySelector("#box-user-create").style.display = "block";
+        document.querySelector("#box-user-update").style.display = "none";
+
+    }
+
+    showPanelUpdate(){
+
+        document.querySelector("#box-user-create").style.display = "none";
+        document.querySelector("#box-user-update").style.display = "block";
+
+    }
 
     updateCount(){
 
