@@ -237,8 +237,8 @@ class UserController {
     showPanelCreate(){
 
         document.querySelector("#box-user-create").style.display = "block";
-        document.querySelector("#form-user-update").style.display = "none";
-        
+        document.querySelector("#box-user-update").style.display = "none";
+
     }
 
     showPanelUpdate(){
