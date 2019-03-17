@@ -187,9 +187,25 @@ class UserController {
             </td>
         `;
 
-        tr.querySelector(".btn-edit").addEventListener("click", e =>{
+        tr.querySelector(".btn-edit").addEventListener("click", e => {
 
-            console.log(JSON.parse(tr.dataset.user));
+            let json = JSON.parse(tr.dataset.user);
+            let form = document.querySelector("#form-user-update");
+
+            for (let name in json){
+
+                let field = form.querySelector("[name=" + name.replace("_", "") + "]");
+                
+                if (field){
+
+                    if(field.type == "file") continue;
+
+                    field.value = json[name];
+
+                }
+
+            }
+
             this.showPanelUpdate();
 
         });
@@ -204,8 +220,14 @@ class UserController {
     showPanelCreate(){
 
         document.querySelector("#box-user-create").style.display = "block";
-        document.querySelector("#box-user-update").style.display = "none";
 
+                document.querySelector("#form-user-update"); "none";
+
+                document.querySelector("#form-user-update");
+
+                document.querySelector("#form-user-update");
+
+                document.querySelector("#form-user-update");
     }
 
     showPanelUpdate(){
