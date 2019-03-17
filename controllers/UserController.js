@@ -198,13 +198,30 @@ class UserController {
                 
                 if (field){
 
-                    if(field.type == "file") continue;
+                    switch (field.type){
 
-                    field.value = json[name];
+                        case 'file':
+                            continue;
+                        break;
 
-                }
+                        case 'radio':
+                            field = form.querySelector("[name=" + name.replace("_", "") + "][value=" + json[name] + "]");
+                            field.checked = true;
+                        break;
+                        
+                        case 'checkbox':
+                            field.checked = json[name];
+                        break;
 
-            }
+                        default:
+                            field.value = json[name];
+                        break;
+
+                    }//End of switch
+
+                }//End of if(field)
+
+            } //End ofr for...
 
             this.showPanelUpdate();
 
@@ -220,14 +237,8 @@ class UserController {
     showPanelCreate(){
 
         document.querySelector("#box-user-create").style.display = "block";
-
-                document.querySelector("#form-user-update"); "none";
-
-                document.querySelector("#form-user-update");
-
-                document.querySelector("#form-user-update");
-
-                document.querySelector("#form-user-update");
+        document.querySelector("#form-user-update").style.display = "none";
+        
     }
 
     showPanelUpdate(){
