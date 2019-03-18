@@ -8,6 +8,7 @@ class UserController {
 
         this.onSubmit();
         this.onEdit();
+        this.selectAll();
 
     }//Closing constructor()
 
@@ -125,6 +126,9 @@ class UserController {
                     //If everything goes OK
                     values.photo = content;
 
+                    //adds the user to the local storage
+                    this.insert(values);
+
                     //adds a user line in table
                     this.addLine(values);
 
@@ -241,6 +245,50 @@ class UserController {
         );
 
     }//Closing getValues()
+
+    getUsersStorage(){
+
+        let users = [];
+
+        if (sessionStorage.getItem("users")) {
+
+            users = JSON.parse(sessionStorage.getItem("users"));
+
+        }
+
+        return users;
+
+    }
+
+    selectAll(){
+
+        //Gets all users from localStorage
+
+        let users = this.getUsersStorage();
+
+        users.forEach(dataUser => {
+
+            let user = new User();
+
+            user.loadFromJSON(dataUser);
+
+            this.addLine(user);
+
+        });
+
+    }
+
+    insert(data){
+
+        //Inserts the user to the localStorage
+
+        let users = this.getUsersStorage();
+
+        users.push(data);
+
+        sessionStorage.setItem("users",JSON.stringify(users));
+
+    }
 
     addLine(dataUser){
     
