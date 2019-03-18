@@ -50,21 +50,12 @@ class UserController {
                         result._photo = content;
                     }
 
-                    tr.dataset.user = JSON.stringify(result);
+                    //Instantiates a new User to remove the "_" underlines from attribute names
+                    let user = new User();
 
-                    tr.innerHTML = `        
-                        <td><img src="${result._photo}" alt="User Image" class="img-circle img-sm"></td>
-                        <td>${result._name}</td>
-                        <td>${result._email}</td>
-                        <td>${(result._admin) ? 'Sim' : 'Não'}</td>
-                        <td>${result._register.toLocaleDateString('pt-br') + " " + result._register.toLocaleTimeString('pt-br')}</td>
-                        <td>
-                            <button type="button" class="btn btn-primary btn-edit btn-xs btn-flat">Editar</button>
-                            <button type="button" class="btn btn-danger btn-xs btn-flat">Excluir</button>
-                        </td>
-                    `;
+                    user.loadFromJSON(result);
 
-                    this.addEventsTr(tr);
+                    this.getTr(user, tr);
 
                     this.updateCount();
 
@@ -123,6 +114,7 @@ class UserController {
             this.getPhoto(this.formEl).then(
                 (content) => {
 
+                    debugger;
                     //If everything goes OK
                     values.photo = content;
 
@@ -211,7 +203,7 @@ class UserController {
             }
 
             if ( field.name == "gender" && field.checked ){
-        
+                
                 user[field.name] = field.value;
         
             } else if (field.name == "admin"){
@@ -258,7 +250,7 @@ class UserController {
 
         return users;
 
-    }
+    }//Closing getUsersStorage
 
     selectAll(){
 
@@ -276,7 +268,7 @@ class UserController {
 
         });
 
-    }
+    }//Closing SelectAll
 
     insert(data){
 
@@ -289,20 +281,33 @@ class UserController {
         //sessionStorage.setItem("users", JSON.stringify(users));
         localStorage.setItem("users",JSON.stringify(users));
 
-    }
+    }//Closing Insert();
 
     addLine(dataUser){
     
-        let tr = document.createElement('tr');
+        let tr = this.getTr(dataUser);
+
+        //Uses the template string to create a table row
+        this.tableEl.appendChild(tr);
+
+        //Updates the user/admin count
+        this.updateCount();
+        
+    }//Closing addline()
+
+    getTr(dataUser, tr = null){
+
+        if (tr === null) tr = document.createElement("tr");
 
         //Sets the tr dataset for further actions
         tr.dataset.user = JSON.stringify(dataUser);
 
+        //Content of tr
         tr.innerHTML = `        
             <td><img src="${dataUser.photo}" alt="User Image" class="img-circle img-sm"></td>
             <td>${dataUser.name}</td>
             <td>${dataUser.email}</td>
-            <td>${(dataUser.admin) ? 'Sim': 'Não'}</td>
+            <td>${(dataUser.admin) ? 'Sim' : 'Não'}</td>
             <td>${dataUser.register.toLocaleDateString('pt-br') + " " + dataUser.register.toLocaleTimeString('pt-br')}</td>
             <td>
                 <button type="button" class="btn btn-primary btn-edit btn-xs btn-flat">Editar</button>
@@ -312,12 +317,9 @@ class UserController {
 
         this.addEventsTr(tr);
 
-        //Uses the template string to create a table row
-        this.tableEl.appendChild(tr);
+        return tr;
 
-        this.updateCount();
-        
-    }//Closing addline()
+    }
 
     addEventsTr(tr){
 
