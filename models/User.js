@@ -163,17 +163,23 @@ class User {
 
     getNewId(){
 
-        if (!window.id) window.id = 0;
+        let usersID = parseInt(localStorage.getItem("usersID"));
 
-        id++;
+        if (!usersID > 0) usersID = 0;
 
-        return id;
+        usersID++;
+
+        localStorage.setItem("usersID", usersID);
+
+        return usersID;
 
     }
 
     save(){
 
         //Inserts the user to the localStorage
+
+        //Get all users from local storage
         let users = User.getUsersStorage();
 
         if (this.id > 0){
@@ -204,5 +210,26 @@ class User {
         localStorage.setItem("users", JSON.stringify(users));
 
     }// Closing save
+
+    remove(){
+
+        //Remove the user from localStorage
+
+        let users = User.getUsersStorage();
+
+        //Search for the user in the array and remove it
+        users.forEach((userData, index) => {
+
+            if (this._id == userData._id){
+
+                users.splice(index, 1);
+
+            }
+
+        });
+
+        localStorage.setItem("users", JSON.stringify(users));
+
+    }//Closing remove
 
 }
