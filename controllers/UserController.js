@@ -55,6 +55,8 @@ class UserController {
 
                     user.loadFromJSON(result);
 
+                    user.save();
+
                     this.getTr(user, tr);
 
                     this.updateCount();
@@ -114,12 +116,13 @@ class UserController {
             this.getPhoto(this.formEl).then(
                 (content) => {
 
-                    debugger;
                     //If everything goes OK
                     values.photo = content;
 
+                    values.save();
+
                     //adds the user to the local storage
-                    this.insert(values);
+                    //this.insert(values);
 
                     //adds a user line in table
                     this.addLine(values);
@@ -237,26 +240,12 @@ class UserController {
         );
 
     }//Closing getValues()
-
-    getUsersStorage(){
-
-        let users = [];
-
-        if (localStorage.getItem("users")) { //Works also with "sessionStorage"
-
-            users = JSON.parse(localStorage.getItem("users"));
-
-        }
-
-        return users;
-
-    }//Closing getUsersStorage
-
+  
     selectAll(){
 
         //Gets all users from localStorage
 
-        let users = this.getUsersStorage();
+        let users = User.getUsersStorage();
 
         users.forEach(dataUser => {
 
@@ -270,10 +259,10 @@ class UserController {
 
     }//Closing SelectAll
 
-    insert(data){
+    //insert(data) method discontinued because User.js has a better behavior
+    /*insert(data){
 
         //Inserts the user to the localStorage
-
         let users = this.getUsersStorage();
 
         users.push(data);
@@ -281,7 +270,7 @@ class UserController {
         //sessionStorage.setItem("users", JSON.stringify(users));
         localStorage.setItem("users",JSON.stringify(users));
 
-    }//Closing Insert();
+    }//Closing Insert();*/
 
     addLine(dataUser){
     

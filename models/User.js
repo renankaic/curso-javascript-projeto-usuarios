@@ -2,6 +2,7 @@ class User {
 
     constructor(name, gender, birth, country, email, password, photo, admin) {
 
+        this._id;
         this._name = name;
         this._gender = gender;
         this._birth = birth;
@@ -15,6 +16,12 @@ class User {
     }
 
     //Getter
+    get id(){
+        
+        return this._id;
+
+    }
+
     get name(){
 
         return this._name;
@@ -138,6 +145,64 @@ class User {
 
         }
 
+    }//End loadFromJSON
+
+    static getUsersStorage() {
+
+        let users = [];
+
+        if (localStorage.getItem("users")) { //Works also with "sessionStorage"
+
+            users = JSON.parse(localStorage.getItem("users"));
+
+        }
+
+        return users;
+
+    }//Closing getUsersStorage
+
+    getNewId(){
+
+        if (!window.id) window.id = 0;
+
+        id++;
+
+        return id;
+
     }
+
+    save(){
+
+        //Inserts the user to the localStorage
+        let users = User.getUsersStorage();
+
+        if (this.id > 0){
+
+            //let user = users.filter( u => { return u._id === this.id });
+            users.map( u => {
+
+                if (u._id == this.id){
+
+                    Object.assign(u, this);
+
+                }
+
+                return u;
+
+            });
+
+        } else {
+
+            this._id = this.getNewId();
+
+            users.push(this);
+
+            //sessionStorage.setItem("users", JSON.stringify(users));
+            
+        }        
+        
+        localStorage.setItem("users", JSON.stringify(users));
+
+    }// Closing save
 
 }
